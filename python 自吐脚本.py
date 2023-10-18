@@ -613,3 +613,53 @@ def mians(pakname):
 
 if __name__ == "__main__":
     mians("0715圈")  # App name
+
+
+# frida 两种模式：
+# 一、spawn模式： Frida 会自动启动并注入进目标App，Hook时机非常早。
+
+# device = frida.get_remote_device()
+# pid = device.spawn(["com.xx.xxx"])  # 包名
+# device.resume(pid)
+# time.sleep(1)
+# session = device.attach(pid)
+# script = session.create_script(jscod)
+# script.on("message", on_message)
+# script.load()
+# sys.stdin.read()
+
+# # if __name__ == "__main__":
+# 	# mians("com.quan0715.forum")  # package name
+# 二、attach模式: Frida 会附加到当前目标进程，即需要App处于启动状态， 这意味着只能从当前时机往后hook。
+
+# # 例一：
+
+# # 获取进程 
+# process = frida.get_remote_device().attach('rock_paper_scissors')  # App name
+# # 创建js脚本（于内存中）
+# script = process.create_script(jscode)
+# # 绑定回调函数
+# script.on('message', on_message)
+# print('[*] Running CTF')
+# # 注入脚本
+# script.load()
+# # 输出log
+# sys.stdin.read()
+
+
+# # 例二：
+
+# jscod = get_js()
+# process = frida.get_remote_device().attach(pakname)
+# script = process.create_script(jscod)
+# script.on("message", on_message)
+# script.load()
+# sys.stdin.read()
+
+# # if __name__ == "__main__":
+# 	# mians("0715圈")  # App name
+
+# get_remote_device 与 get_usb_device 的区别：
+# 名称	get_remote_device	get_usb_device
+# 端口转发	需要	不需要
+# attach 字段	package name	App name进程名
